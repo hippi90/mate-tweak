@@ -1387,8 +1387,8 @@ class MateTweak:
         self.layout_path = ''
         if os.path.isdir(os.path.join('/','usr','share','mate-panel')):
             self.layout_path = os.path.join('/','usr','share','mate-panel','layouts')
-        elif os.path.isdir(os.path.join('/','usr','share', 'local', 'mate-panel')):
-            self.layout_path = os.path.join('/','usr','share', 'local', 'mate-panel','layouts')
+        elif os.path.isdir(os.path.join('/','usr', 'local', 'share', 'mate-panel')):
+            self.layout_path = os.path.join('/','usr', 'local', 'share', 'mate-panel','layouts')
 
         # Load the Glade UI file
         self.builder = Gtk.Builder()
