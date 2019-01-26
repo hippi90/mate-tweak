@@ -894,7 +894,7 @@ class MateTweak:
             self.disable_dock()
 
     def panel_layout_exists(self, panel_layout):
-        return os.path.exists('/usr/share/mate-panel/layouts/' + panel_layout + '.layout')
+        return os.path.exists(self.layout_path + panel_layout + '.layout')
 
     def check_glx_features(self):
         if self.find_on_path('glxinfo'):
@@ -1143,9 +1143,9 @@ class MateTweak:
         panels = Gtk.ListStore(str, str)
 
         # Add any saved panel layouts first.
-        layouts = os.path.join('/','usr','share','mate-panel','layouts','*-tweak.layout')
+        layouts = os.path.join(self.layout_path, '*-tweak.layout')
         for layout in glob.glob(layouts):
-            current_layout = layout.replace('.layout', '').replace('/usr/share/mate-panel/layouts/', '');
+            current_layout = os.path.splitext(os.path.basename(layout))
             panels.append([_('Custom: ') + current_layout.replace('-tweak', ''), current_layout])
 
         if self.panel_layout_exists('contemporary') and \
@@ -1382,6 +1382,13 @@ class MateTweak:
         self.check_wm_features()
         self.check_appmenu()
         self.previous_wm = self.current_wm
+
+        # Trying to determine path to layouts
+        self.layout_path = ''
+        if os.path.isdir(os.path.join('/','usr','share','mate-panel')):
+            self.layout_path = os.path.join('/','usr','share','mate-panel','layouts')
+        elif os.path.isdir(os.path.join('/','usr','share', 'local', 'mate-panel')):
+            self.layout_path = os.path.join('/','usr','share', 'local', 'mate-panel','layouts')
 
         # Load the Glade UI file
         self.builder = Gtk.Builder()
